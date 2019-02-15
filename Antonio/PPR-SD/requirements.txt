@@ -1,0 +1,10 @@
+pytest==3.9.3
+pytest-html==1.19.0
+pytest-capturelog==0.7
+selenium == 2.53.0
+pytest-rerunfailures==4.1
+retry
+pytest-sugar==0.9.1
+pytest-ordering==0.5
+pyaml
+pytest-repeat
