@@ -1,15 +1,10 @@
-
+from util.testbase import Testbase
 import pytest
 
-class Test_Login(testbase):
+class Test_Login(Testbase):
     
 
     @pytest.mark.SMOKE
-    def test_User_Is_LoggedIn(self,login_panel_1_object):
-     
-	"""
-        Check if user can log in to app
-        """
-        
+    def test_User_Is_LoggedIn(self,login_screen):
         pass
-
+     

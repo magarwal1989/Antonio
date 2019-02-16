@@ -1,15 +1,10 @@
-import ftplib
 import os
 from os import environ
 from random import randint
-from.Properties import Constants
-
+from base_logger import BaseLogging
 
 import pytest
-
-
-
-test_log_obj = BaseLogging("TEST_EXECUTION_LOGS")
+logger = BaseLogging("TEST_EXECUTION_LOGS")
 
 
 
@@ -17,21 +12,19 @@ def pytest_runtest_setup(item):
     """ called before ``pytest_runtest_call(item). """
     # do some stuff`
     try:
-        test_log_obj = BaseLogging(item.name)
+        logger = BaseLogging(item.name)
     except FileNotFoundError as f:
-        print("file not found error occured . Setting the log file name to TEST_EXECUTION_LOGS for the test " + item.name)
-        test_log_obj = BaseLogging("TEST_EXECUTION_LOGS")
-    test_log_obj.write("TEST SETUP RUNNING FOR TEST  "+item.name)
+        logger = BaseLogging("TEST_EXECUTION_LOGS")
+        logger.write("TEST SETUP RUNNING FOR TEST  "+item.name)
 
 def pytest_runtest_teardown(item):
     """ called before ``pytest_runtest_call(item). """
     # do some stuff`
     try:
-        test_log_obj = BaseLogging(item.name)
+        logger = BaseLogging(item.name)
     except FileNotFoundError as f:
-        print("file not found error occured . Setting the log file name to TEST_EXECUTION_LOGS for the test "+item.name)
-        test_log_obj = BaseLogging("TEST_EXECUTION_LOGS")
-    test_log_obj.write("TEST TEAR DOWN COMPLETED "+item.name)
+        logger = BaseLogging("TEST_EXECUTION_LOGS")
+        logger.write("TEST TEAR DOWN COMPLETED "+item.name)
 
 def get_project_root():
     path = os.path.join(os.path.dirname(__file__),'..')
@@ -60,8 +53,6 @@ def make_screenshots_dir():
     PROJECT_ROOT = get_project_root()
     if not os.path.exists(os.path.join(PROJECT_ROOT, 'Screenshots')):
         os.makedirs(os.path.join(PROJECT_ROOT, 'Screenshots'))
-    if not os.path.exists(os.path.join(PROJECT_ROOT, 'Screenshots_Streaming')):
-        os.makedirs(os.path.join(PROJECT_ROOT, 'Screenshots_Streaming'))
 
 
 
@@ -83,11 +74,11 @@ def pytest_runtest_makereport(item):
         report = outcome.get_result()
         extra = getattr(report, 'extra', [])
         if report.when == 'setup':
-            test_log_obj.write("TEST SETUP "+report.outcome)
+            logger.write("TEST SETUP "+report.outcome)
         if report.when == 'call':
-            test_log_obj.write(Constants.TEST_COMPLETED+" "+report.outcome)
+            logger.write("Test Finished"+" "+report.outcome)
         if report.when == 'teardown':
-            test_log_obj.write("TEST TEARDOWN COMPLETED "+report.outcome)
+            logger.write("TEST TEARDOWN COMPLETED "+report.outcome)
 
 
 
@@ -99,20 +90,10 @@ def pytest_runtest_makereport(item):
                 if ("/") in name_screenshot:
                     name_screenshot = name_screenshot.replace("/", '_')
                 screenshot_location_local = getScreeshotDirectoryLocation()
-                base_loc_ftp = "ftp://"+ftp_server+"/"+remote_dir+"/"
                 names_of_files = _capture_screenshot(screenshot_location_local,name_screenshot)
-                _upload_screenshot_ftp(ftp_server_lab_ip, username, password, remote_dir)
-                for item in names_of_files:
-                    baseNameFTP = base_loc_ftp + "/"+item
 
-                    file_name = baseNameFTP
-                    if file_name:
-                        html = '<div><img src="%s" alt="screenshot" style="width:304px;height:228px;" ' \
-                               'onclick="window.open(this.src)" align="right"/></div>' % file_name
-                        extra.append(pytest_html.extras.html(html))
-            report.extra = extra
     except Exception as e:
-        test_log_obj.write(" Error in Generating the Pytest report ----->"+(str(e)),"warn")
+        logger.write(" Error in Generating the Pytest report ----->"+(str(e)),"warn")
 
 
 
@@ -120,15 +101,10 @@ def _capture_screenshot(location,name):
     """"
     capture screenshot
     """
-   # PageBase_OpSpace.getCurrentDriverInstance().save_screenshot(name)
-    driver_dict = PageBase_OpSpace.getAllCurrentDriverInstance()
-    names=[]
-    for k,v in driver_dict.items():
-        name_of_screenshot=location+"/"+name+"_"+k+".png"
-        name_of_screenshot_without_location =name+"_"+k+".png"
-        v.save_screenshot(name_of_screenshot)
-        names.append(name_of_screenshot_without_location)
-    return names
+
+    #from util.pagebase import Pagebase
+    #Pagebase.get_current_driver_instance().save_screenshot(location+"/"+name+"_"+".png")
+    pass
 
 def generate_Random_Number():
     """"
