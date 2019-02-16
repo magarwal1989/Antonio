@@ -1,24 +1,17 @@
 import pytest
+from util.driverclass import driverClass
+from lib.page_objects.login_panel import Login_Panel
+from config.config import Config
 
 
 
-class Testbase():
+class Testbase(object):
 
-        """
-    @pytest.fixture()
-    def login_app(request):
-        driver_panel_1 = driverClass.register_driver()
-        HM_obj = HM_LOGIN_PANEL(driver_panel_1)
-        HM_obj.open_health_monitor(Constants.HEALTH_MONITOR_URL)
-        yield HM_obj
-        HM_obj.logout()
 
-    ## TEAR DOWN FIXTURE####
-    @pytest.fixture(autouse=Constants.TEARDOWN_USE, scope=Constants.TEARDOWN_SCOPE)
-    def my_fixture(self):
-        yield
-        if (Constants.TEARDOWN_USE == "True"):
-            pagebase.quitAll()
-        test_log_obj.write("Teardown executed with scope = "+Constants.TEARDOWN_SCOPE)
-
-  
+        @pytest.fixture()
+        def login_screen(request):
+                driver = driverClass.register_driver()
+                login_obj = Login_Panel(driver)
+                login_obj.open(Config.app_url)
+                login_obj.loginDefaultUser()
+                yield login_obj
