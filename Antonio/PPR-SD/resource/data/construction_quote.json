@@ -1,0 +1,31 @@
+{
+  "quote": {
+    "created_by":"Antonio Dupont",
+    "sale_rep":"Antonio Dupont",
+    "user": "antonio dupont",
+    "status": "pending",
+    "customer": "ABC - Antonio's Test : Antonio Dupont  : 310-980-3354  : antonio@antoniodupont.com ",
+    "delivery_date": "today",
+    "pick_up_date": "next_week",
+    "delivery_address": "automation address",
+    "delivery_city": "Oceanside",
+    "delivery_zip": "92003",
+    "equipment_services": [
+      {
+        "Quantity": "1",
+        "product": "STANDARD RESTROOM"
+        
+      },
+      {
+        "Quantity": "1",
+        "product": "CONTAINMENT TRAY"
+        
+      },
+      {
+        "Quantity": "1",
+        "product": "DELIVERY CHARGE (SAME DAY)"
+        
+      }
+    ]
+  }
+}

@@ -60,6 +60,10 @@ def getScreeshotDirectoryLocation():
     PROJECT_ROOT = get_project_root()
     return os.path.join(PROJECT_ROOT,'Screenshots')
 
+def get_test_data_directory():
+    PROJECT_ROOT = get_project_root()
+    return os.path.join(PROJECT_ROOT,"resource","data")
+
 
 @pytest.mark.hookwrapper
 def pytest_runtest_makereport(item):

@@ -7,8 +7,6 @@ of application inherit from. This class contains all selenium actions.
 from enum import Enum
 from time import sleep
 from retry import retry
-from PIL import Image
-
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
