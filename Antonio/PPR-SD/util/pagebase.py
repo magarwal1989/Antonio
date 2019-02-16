@@ -556,7 +556,7 @@ class PageBase(object):
         """
         self._driver.refresh()
 
-   
+
 
 class Strategy(Enum):
     """

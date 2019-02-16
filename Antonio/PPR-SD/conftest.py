@@ -27,7 +27,7 @@ def pytest_runtest_teardown(item):
         logger.write("TEST TEAR DOWN COMPLETED "+item.name)
 
 def get_project_root():
-    path = os.path.join(os.path.dirname(__file__),'..')
+    path = os.path.join(os.path.dirname(__file__))
     return os.path.abspath(path)
 
 @pytest.fixture(autouse=True,scope='session')
