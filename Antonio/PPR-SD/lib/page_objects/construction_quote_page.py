@@ -5,6 +5,7 @@ from conftest import logger
 from util.utils import get_current_date
 from util.utils import get_next_week_date
 from config.config import Config
+from ..page_objects.list_quotation import ListQuotation
 import os
 
 file_path = os.path.join(get_test_data_directory(),"construction_quote.json")
@@ -38,14 +39,9 @@ class ConstructionQuote(PageBase):
     product_3 = "id@product_3"
 
     delivery_start_date = "xpath@@//input[@id='job_start_date']"
-    pick_up_date = "xpath@@//input[@id='job_end_date']"
+    delivery_end_date = "xpath@@//input[@id='job_end_date']"
     submit_btn = "xpath@@//input[@name='submit']"
 
-
-    def enter_value_and_select_from_dropdown(self,dropdown_locator,dropdown_input_box_locator,value):
-        self.click(dropdown_locator)
-        self.set_field(dropdown_input_box_locator, value)
-        self.hit_enter(dropdown_input_box_locator)
 
     def add_construction_quote(self):
         created_by = data["quote"]["created_by"]
@@ -57,23 +53,27 @@ class ConstructionQuote(PageBase):
         quote_status = data["quote"]["status"]
         self.enter_value_and_select_from_dropdown(self.quote_status_xpath, self.quote_status_input, quote_status)
 
+        #self.sleep_in_seconds(5)
         customer = data["quote"]["customer"]
         self.enter_value_and_select_from_dropdown(self.customer_xpath, self.customer_input, customer)
+
+
+        delivery_start_date = get_current_date()
+        self.set_field(self.delivery_start_date, delivery_start_date)
+        self.hit_enter(self.delivery_start_date)
+
+        delivery_end_date = get_next_week_date()
+        self.set_field(self.delivery_end_date, delivery_end_date)
+        self.hit_enter(self.delivery_end_date)
+
+        delivery_zip = data["quote"]["delivery_zip"]
+        self.set_field(self.delivery_zip, delivery_zip)
 
         delivery_add = data["quote"]["delivery_address"]
         self.set_field(self.delivery_address,delivery_add)
 
         delivery_city = data["quote"]["delivery_city"]
         self.enter_value_and_select_from_dropdown(self.delivery_city_xpath, self.delivery_city_input, delivery_city)
-
-        delivery_zip = data["quote"]["delivery_zip"]
-        self.set_field(self.delivery_zip, delivery_zip)
-
-        delivery_start_date = get_current_date()
-        self.set_field(self.delivery_start_date, delivery_start_date)
-
-        delivery_end_date = get_next_week_date()
-        self.set_field(self.delivery_start_date, delivery_end_date)
 
         equip_serv_1_quant = data["quote"]["equipment_services"][0]["Quantity"]
         equip_serv_1_prod = data["quote"]["equipment_services"][0]["product"]
@@ -82,9 +82,9 @@ class ConstructionQuote(PageBase):
         self.sleep_in_seconds(2)
         self.click("xpath@@//ul//li//div[text()='STANDARD RESTROOM']")
         self.sleep_in_seconds(2)
-        self.sleep_in_seconds(30)
         self.click(self.submit_btn)
-        self.sleep_in_seconds(30)
+        return ListQuotation(self.get_current_driver())
+
 
 
 
