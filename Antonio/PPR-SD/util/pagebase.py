@@ -353,7 +353,7 @@ class PageBase(object):
         element = self.find_element(locator)
         try:
             element.send_keys(Keys.ENTER)
-            self.sleep_in_seconds(wait_time)
+            #self.sleep_in_seconds(wait_time)
         except Exception as e:
             raise e
 
@@ -467,7 +467,11 @@ class PageBase(object):
         except Exception as e:
             raise e
 
-
+    def enter_value_and_select_from_dropdown(self, dropdown_locator, dropdown_input_box_locator, value):
+        self.click(dropdown_locator)
+        self.sleep_in_seconds(2)
+        self.set_field(dropdown_input_box_locator, value)
+        self.hit_enter(dropdown_input_box_locator)
 
     def teardown_browser(self):
         """
