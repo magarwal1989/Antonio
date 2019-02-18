@@ -31,7 +31,7 @@ class BaseLogging():
             log_file_name = self.log_file_dir + os.sep + test_module_name + '.log'
         else:
             log_file_name = self.log_file_dir + os.sep + log_file_name
-        self.add_file_handler(log,logging.WARN,format,log_file_name)
+        self.add_file_handler(log,level,format,log_file_name)
 
         return log
 
