@@ -4,9 +4,8 @@ from random import randint
 from base_logger import BaseLogging
 
 import pytest
+
 logger = BaseLogging("TEST_EXECUTION_LOGS")
-
-
 
 def pytest_runtest_setup(item):
     """ called before ``pytest_runtest_call(item). """
@@ -14,8 +13,10 @@ def pytest_runtest_setup(item):
     try:
         logger = BaseLogging(item.name)
     except FileNotFoundError as f:
+
         logger = BaseLogging("TEST_EXECUTION_LOGS")
-        logger.write("TEST SETUP RUNNING FOR TEST  "+item.name)
+
+
 
 def pytest_runtest_teardown(item):
     """ called before ``pytest_runtest_call(item). """
@@ -23,8 +24,9 @@ def pytest_runtest_teardown(item):
     try:
         logger = BaseLogging(item.name)
     except FileNotFoundError as f:
-        logger = BaseLogging("TEST_EXECUTION_LOGS")
-        logger.write("TEST TEAR DOWN COMPLETED "+item.name)
+           logger = BaseLogging("TEST_EXECUTION_LOGS")
+
+
 
 def get_project_root():
     path = os.path.join(os.path.dirname(__file__))
@@ -106,9 +108,9 @@ def _capture_screenshot(location,name):
     capture screenshot
     """
 
-    #from util.pagebase import Pagebase
-    #Pagebase.get_current_driver_instance().save_screenshot(location+"/"+name+"_"+".png")
-    pass
+    from util.testbase import driver
+    driver.save_screenshot(location+"/"+name+"_"+".png")
+
 
 def generate_Random_Number():
     """"

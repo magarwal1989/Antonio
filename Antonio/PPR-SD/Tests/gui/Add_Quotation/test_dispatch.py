@@ -1,4 +1,5 @@
 from util.testbase import Testbase
+from conftest import logger
 import pytest
 
 class Test_Dispatch(Testbase):
@@ -6,6 +7,7 @@ class Test_Dispatch(Testbase):
 
     @pytest.mark.SMOKE
     def test_dispatch(self,home_page_obj):
+        logger.write("Starting the test","info")
         dispatch_menu_obj =home_page_obj.select_dispatch_menu()
         dcal_obj = dispatch_menu_obj.select_dispatch_calendar()
         d_details_obj = dcal_obj.select_current_date()
