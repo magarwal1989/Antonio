@@ -23,11 +23,16 @@ class AddOrders(PageBase):
 
     def select_order_status_ordered(self):
         self.click(self.select_status)
-        self.sleep_in_seconds(2)
+        #self.sleep_in_seconds(2)
         self.click(self.ordered)
-        self.sleep_in_seconds(10)
+        #self.sleep_in_seconds(10)
+
+    def wait_till_order_details_fetched(self,order_data):
+        self.wait_till_text_present_in_input_field(self.customer_xpath,order_data)
+
 
     def submit_order(self):
+
         from ..page_objects.construction_quote_page import data
         #self.sleep_in_seconds(5)
       #  customer = data["quote"]["customer"]

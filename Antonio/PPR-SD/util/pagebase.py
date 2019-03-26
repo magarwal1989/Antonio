@@ -92,6 +92,7 @@ class PageBase(object):
         :param locator: Element locator strategy
         :return: element
         """
+
         element = None
         if isinstance(locator, str):
             element = self.find_element(locator)
@@ -99,6 +100,7 @@ class PageBase(object):
             element = locator
 
         if element is not None:
+            self.wait_till_element_is_clickable(locator)
             element.click()
         else:
             raise Exception("Could not click on the element with locator {}".
@@ -125,7 +127,7 @@ class PageBase(object):
         """
         webelement = self.find_element(locator)
         try:
-
+            self.wait_till_element_is_clickable(locator)
             webelement.send_keys(element_value)
         except Exception as e:
             raise Exception("Could not write on the the element {} due to {}".
@@ -467,9 +469,24 @@ class PageBase(object):
         except Exception as e:
             raise e
 
+    def wait_till_element_is_clickable(self, locator, timeout=10):
+        """
+        WebDriver Explicit wait till element is clickable, once appeared wait will over
+        :param locator: element to be checked
+        :param timeout: timeout
+        :return:
+        """
+        try:
+            element = WebDriverWait(self._driver, timeout). \
+                until(EC.element_to_be_clickable(self.__get_by(locator)))
+            return element
+        except Exception as e:
+            raise e
+
+
     def enter_value_and_select_from_dropdown(self, dropdown_locator, dropdown_input_box_locator, value):
         self.click(dropdown_locator)
-        self.sleep_in_seconds(2)
+        #self.sleep_in_seconds(2)
         self.set_field(dropdown_input_box_locator, value)
         self.hit_enter(dropdown_input_box_locator)
 
@@ -558,6 +575,13 @@ class PageBase(object):
         """
         self._driver.refresh()
 
+    def wait_till_text_present_in_input_field(self,locator,text,timeout=10,):
+        try:
+            element = WebDriverWait(self._driver, timeout). \
+                until(EC.text_to_be_present_in_element(self.__get_by(locator),text))
+            return element
+        except Exception as e:
+            raise e
 
 
 class Strategy(Enum):
