@@ -42,6 +42,10 @@ class ConstructionQuote(PageBase):
     delivery_end_date = "xpath@@//input[@id='job_end_date']"
     submit_btn = "xpath@@//input[@name='submit']"
 
+    def get_customer_name_data(self):
+        return data["quote"]["customer"]
+
+
 
     def add_construction_quote(self):
         created_by = data["quote"]["created_by"]
@@ -56,6 +60,7 @@ class ConstructionQuote(PageBase):
         #self.sleep_in_seconds(5)
         customer = data["quote"]["customer"]
         self.enter_value_and_select_from_dropdown(self.customer_xpath, self.customer_input, customer)
+      #  self.sleep_in_seconds(5)
 
 
         delivery_start_date = get_current_date()
@@ -79,9 +84,9 @@ class ConstructionQuote(PageBase):
         equip_serv_1_prod = data["quote"]["equipment_services"][0]["product"]
         self.set_field(self.quantity_1,equip_serv_1_quant)
         self.set_field(self.product_1, equip_serv_1_prod)
-        self.sleep_in_seconds(2)
+        #self.sleep_in_seconds(2)
         self.click("xpath@@//ul//li//div[text()='STANDARD RESTROOM']")
-        self.sleep_in_seconds(2)
+        #self.sleep_in_seconds(2)
         self.click(self.submit_btn)
         return ListQuotation(self.get_current_driver())
 

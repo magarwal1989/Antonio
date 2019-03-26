@@ -4,7 +4,7 @@
     "sale_rep":"Antonio Dupont",
     "user": "antonio dupont",
     "status": "pending",
-    "customer": "ABC - Antonio's Test : Antonio Dupont  : 310-980-3354  : antonio@antoniodupont.com ",
+    "customer": "ABC - Antonio's Test",
     "delivery_date": "today",
     "pick_up_date": "next_week",
     "delivery_address": "automation address",

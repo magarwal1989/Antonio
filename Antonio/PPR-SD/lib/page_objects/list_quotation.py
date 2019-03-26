@@ -34,6 +34,10 @@ class ListQuotation(PageBase):
             self.click(self.generate_order)
             return AddOrders(self.get_current_driver())
 
+    def return_home_page_obj(self):
+        from ..page_objects.home_page import HomePage
+        return HomePage(self.get_current_driver())
+
 
 
 

@@ -13,7 +13,7 @@ class EmailOrders(PageBase):
 
 
     def send_email(self):
-        self.sleep_in_seconds(5)
+        #self.sleep_in_seconds(5)
         self.click(self.send_email_btn)
 
     def is_email_sent(self):
