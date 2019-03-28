@@ -22,6 +22,9 @@ class DispatchDetails(PageBase):
             self.click(self.assign_driver_btn)
             return RouteAssignment(self.get_current_driver())
 
+    def search_for_order(self,order_no):
+        from ..page_objects.list_orders import ListOrders
+        return ListOrders(self.get_current_driver()).search_for_order(order_no)
 
 
 

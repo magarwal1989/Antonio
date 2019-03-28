@@ -16,7 +16,7 @@ class DriverListsPage(PageBase):
         self.set_field(self.search_driver, driver_name)
         self.hit_enter(self.search_driver)
         self.click(self.search_result)
-        self.sleep_in_seconds(30)
+        #self.sleep_in_seconds(30)
 
 
 
