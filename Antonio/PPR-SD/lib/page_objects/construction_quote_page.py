@@ -4,7 +4,6 @@ from util.pagebase import PageBase
 from conftest import logger
 from util.utils import get_current_date
 from util.utils import get_next_week_date
-from config.config import Config
 from ..page_objects.list_quotation import ListQuotation
 import os
 
@@ -24,6 +23,9 @@ class ConstructionQuote(PageBase):
     quote_status_input = "xpath@@//label[@for='status']/following-sibling::*//input"
     customer_xpath = "xpath@@//label[@for='customer']/..//div[@id='customer_chosen']"
     customer_input = "xpath@@//label[@for='customer']/following-sibling::*//input"
+    add_btn = "xpath@@//*[@id='addButton2']"
+    quantity_field = lambda self, text: "xpath@@//*[@id='quantity-"+text+"']"
+    product_field = lambda self, text: "xpath@@//*[@id='product-" + text + "']"
 
     delivery_address = "id@@job_address"
     delivery_city_xpath = "xpath@@//*[@id='job_city_chosen']"
@@ -42,8 +44,27 @@ class ConstructionQuote(PageBase):
     delivery_end_date = "xpath@@//input[@id='job_end_date']"
     submit_btn = "xpath@@//input[@name='submit']"
 
+    def get_json_array_length(self,json_data,json_array_element):
+        import json
+        item_dict = json.loads(json_data)
+        return len(item_dict[json_array_element])
+
     def get_customer_name_data(self):
         return data["quote"]["customer"]
+
+
+
+
+    def add_equipment_service(self,no_of_products):
+
+        for i in range(int(no_of_products)):
+            product_name = data["quote"]["equipment_services"][i]["product"]
+            product_quantity = data["quote"]["equipment_services"][i]["quantity"]
+            self.log_obj.write("Ädding equipment {} with quantity as {}".format(product_name,product_quantity))
+            self.set_field(self.quantity_field(str(i+1)),product_quantity)
+            self.set_field(self.product_field(str(i+1)), product_name)
+            self.click("xpath@@//ul//li//div[contains(text(),'"+product_name+"')]")
+            self.click(self.add_btn)
 
 
 
@@ -57,10 +78,10 @@ class ConstructionQuote(PageBase):
         quote_status = data["quote"]["status"]
         self.enter_value_and_select_from_dropdown(self.quote_status_xpath, self.quote_status_input, quote_status)
 
-        #self.sleep_in_seconds(5)
+
         customer = data["quote"]["customer"]
         self.enter_value_and_select_from_dropdown(self.customer_xpath, self.customer_input, customer)
-      #  self.sleep_in_seconds(5)
+
 
 
         delivery_start_date = get_current_date()
@@ -79,14 +100,7 @@ class ConstructionQuote(PageBase):
 
         delivery_city = data["quote"]["delivery_city"]
         self.enter_value_and_select_from_dropdown(self.delivery_city_xpath, self.delivery_city_input, delivery_city)
-
-        equip_serv_1_quant = data["quote"]["equipment_services"][0]["Quantity"]
-        equip_serv_1_prod = data["quote"]["equipment_services"][0]["product"]
-        self.set_field(self.quantity_1,equip_serv_1_quant)
-        self.set_field(self.product_1, equip_serv_1_prod)
-        #self.sleep_in_seconds(2)
-        self.click("xpath@@//ul//li//div[text()='STANDARD RESTROOM']")
-        #self.sleep_in_seconds(2)
+        self.add_equipment_service(3)
         self.click(self.submit_btn)
         return ListQuotation(self.get_current_driver())
 
